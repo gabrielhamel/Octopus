@@ -1,0 +1,47 @@
+- name: Install gpg from apt
+  become: true
+  apt:
+    name: gpg
+
+- name: Add nodesource apt key
+  become: true
+  apt_key:
+    url: https://deb.nodesource.com/gpgkey/nodesource.gpg.key
+
+- name: Add nodesource mirror
+  become: true
+  apt_repository:
+    repo: 'deb https://deb.nodesource.com/node_12.x buster main'
+
+- name: Install nodejs and npm from apt
+  become: true
+  apt:
+    name: nodejs
+
+- name: Extract archive result.tar
+  unarchive:
+    src: ../../../result.tar
+    dest: /home/{{ ansible_user }}
+
+- name: Install node dependencies
+  npm:
+    path: /home/{{ ansible_user }}/result
+
+- name: Copy result service
+  become: true
+  template:
+    src: ../files/result.service
+    dest: /etc/systemd/system
+
+- name: Refresh and start service
+  become: true
+  systemd:
+    state: restarted
+    daemon_reload: yes
+    name: result
+
+- name: Enable service at boot
+  become: true
+  systemd:
+    enabled: yes
+    name: result

@@ -1,0 +1,17 @@
+[Unit]
+Description=Launch result service
+After=network-online.target
+
+[Service]
+Type=simple
+Environment=PORT=80
+Environment=POSTGRESQL_HOST={{ postgresql_host }}
+Environment=POSTGRESQL_USER={{ postgresql_user }}
+Environment=POSTGRESQL_PASSWORD={{ postgresql_password }}
+Environment=POSTGRESQL_PORT=5432
+Environment=POSTGRESQL_DB={{ postgresql_db }}
+ExecStart=/usr/bin/node /home/{{ ansible_user }}/result/server.js
+Restart=on-failure
+
+[Install]
+WantedBy=multi-user.target

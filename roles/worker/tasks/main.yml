@@ -1,0 +1,38 @@
+- name: Install maven from apt
+  become: true
+  apt:
+    name: maven
+
+- name: Extract archive worker.tar
+  unarchive:
+    src: ../../../worker.tar
+    dest: /home/{{ ansible_user }}
+
+- name: Install maven dependencies
+  shell: mvn dependency:resolve
+  args:
+    chdir: /home/{{ ansible_user }}/worker
+
+- name: Build maven
+  shell: mvn package
+  args:
+    chdir: /home/{{ ansible_user }}/worker
+
+- name: Copy worker service
+  become: true
+  template:
+    src: ../files/worker.service
+    dest: /etc/systemd/system
+
+- name: Refresh and start service
+  become: true
+  systemd:
+    state: restarted
+    daemon_reload: yes
+    name: worker
+
+- name: Enable service at boot
+  become: true
+  systemd:
+    enabled: yes
+    name: worker

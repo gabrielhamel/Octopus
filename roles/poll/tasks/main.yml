@@ -1,0 +1,34 @@
+- name: Install pip from apt
+  become: true
+  apt:
+    name: python-pip
+
+- name: Extract archive poll.tar
+  unarchive:
+    src: ../../../poll.tar
+    dest: /home/{{ ansible_user }}
+
+- name: Install python dependencies
+  become: true
+  pip:
+    requirements: /home/{{ ansible_user }}/poll/requirements.txt
+    executable: pip
+
+- name: Copy poll service
+  become: true
+  template:
+    src: ../files/poll.service
+    dest: /etc/systemd/system
+
+- name: Refresh and start service
+  become: true
+  systemd:
+    state: restarted
+    daemon_reload: yes
+    name: poll
+
+- name: Enable service at boot
+  become: true
+  systemd:
+    enabled: yes
+    name: poll

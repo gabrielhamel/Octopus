@@ -1,0 +1,6 @@
+- name: Setting locale
+  lineinfile:
+    path: "/home/{{ ansible_user }}/.profile"
+    line: "LC_ALL=en_US.UTF-8"
+  environment:
+    LC_ALL: en_US.UTF-8

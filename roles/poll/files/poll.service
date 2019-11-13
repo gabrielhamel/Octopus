@@ -1,0 +1,12 @@
+[Unit]
+Description=Launch poll service
+After=network-online.target
+
+[Service]
+Type=simple
+Environment=REDIS_HOST={{ redis_host }}
+ExecStart=python /home/{{ ansible_user }}/poll/app.py
+Restart=on-failure
+
+[Install]
+WantedBy=multi-user.target
