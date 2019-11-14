@@ -28,8 +28,8 @@ ansible-playbook -i production playbook.yml
 ### ☕ Reprendre un café
 
 ## **⚽ Utilisation :**
-- [Page formulaire](localhost:5000)
-- [Page résulats](localhost:5001)
+- [Page formulaire](http://localhost:5000)
+- [Page résulats](http://localhost:5001)
 
 ## **🛑 Arrêter l'environement :**
 ```bash
