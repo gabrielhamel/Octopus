@@ -18,7 +18,7 @@
 - **ansible** (2.7+)
 
 ```bash
-# Create a file with the database password
+# The postgresql password. /!\ Is not the real password
 echo thesecretpassword > /tmp/.vault_pass
 # Setup the ansible vault var
 export ANSIBLE_VAULT_PASSWORD_FILE=/tmp/.vault_pass
